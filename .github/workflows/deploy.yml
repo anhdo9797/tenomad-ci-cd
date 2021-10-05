@@ -1,0 +1,31 @@
+name: Deploy to Firebase
+on: 
+  push:
+    branches:
+      - "master"
+jobs:
+  firebase_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code from ref
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Install nodeJs
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
+      
+      - name: Deploy to Firebase
+        # uses: w9jds/firebase-action@master 
+        uses: docker://w9jds/firebase-action:latest
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
