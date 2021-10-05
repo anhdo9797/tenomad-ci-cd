@@ -1,6 +1,6 @@
 # [TENOMAD](https://tenomad.com/)
 
-## HOW TO BUILD FLUTTER GITHUB ACTIONS & JENKINS
+## HOW TO BUILD FLUTTER WITH GITHUB ACTIONS & JENKINS
 
 #### Code base: [flutter_getx_boilerplate](https://github.com/KevinZhang19870314/flutter_getx_boilerplate)
 
