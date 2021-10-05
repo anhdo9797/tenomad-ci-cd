@@ -7,12 +7,22 @@ platform :ios do
 
   # run lane with syntax fastlane build_local 'system':'firebase'/'testflight'
   lane :build_local do | options |
-    new_build_number=increment_build_number() 
+    increment_build_number() 
 
-    build
-    deloy_app(system: options[:system])
-    push_to_slack(system: options[:system])
-
+    build_app(
+      configuration: "Release",
+      scheme: "Runner",
+      workspace: "Runner.xcworkspace",
+      export_method: "app-store",
+    )
+    if options[:system] == 'firebase' 
+      firebase_app_distribution(
+        app: "<your app>",
+        groups: "<your group>",
+        release_notes_file: "../release-notes.txt"
+      )
+      else upload_to_testflight(skip_waiting_for_build_processing: true)
+    end
   end
 
   lane :sign_in do 
