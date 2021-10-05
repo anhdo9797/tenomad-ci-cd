@@ -1,0 +1,3 @@
+- Sửa lỗi ứng dụng 
+- Cải tiến giao diện thân thiện hơn 
+- Cải tiến một số chức năng để việc đặt xe, chọn địa điểm dễ dàng hơn

@@ -1,0 +1,26 @@
+
+# The bundle id
+app_identifier "com.xeke.app"
+
+# The apple id 
+apple_id "<email apple>"
+
+# Set the FASTLANE_PASSWORD shell environment variable
+# Cop to terminal: export FASTLANE_PASSWORD=<password apple>
+# Check variable, cop to terminal: echo $FASTLANE_PASSWORD`
+
+# How to get team id: 
+## Log in developer apple: https://developer.apple.com
+## Select "Account", select "Membership" and get the feild "Team Id"
+team_id "<your team_id>"
+
+# How to get itc_team_id: https://stackoverflow.com/a/58424010/14539746
+## Get: https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/user/detail
+## itc_team_id= contentProviderId
+itc_team_id "<your itc_team_id>" 
+
+# set ENV
+## FASTLANE_PASSWORD
+## FASTLANE_SESSION: fastlane spaceauth -u user@email.com
+## FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: https://appleid.apple.com/
+#Follow: https://docs.fastlane.tools/getting-started/ios/authentication/

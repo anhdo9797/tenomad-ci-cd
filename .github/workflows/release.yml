@@ -1,0 +1,59 @@
+# Document: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+# Main item:
+# + GitHub-hosted runners: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#:~:text=self-hosted%20runner.-,GitHub-hosted%20runners,-If%20you%20use
+# + Action: https://github.com/orgs/actions/repositories?q=&type=&language=&sort=
+
+# References:
+# https://gist.github.com/devhammed/617d920b7ee886591a46c22633ab0093
+# https://joshuamdeguzman.com/continuous-delivery-for-flutter-using-fastlane-and-github-actions-pt-3-ios/
+
+# cd.yml
+name: Release
+
+on:
+  push:
+    branches:
+      - 'master'
+      
+jobs:
+ deploy_ios:
+    name: Deploy beta build to TestFlight
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout code from ref
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Run Flutter tasks
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.2.3'
+
+      - name: Install depenencis
+        run: | 
+          export LC_ALL=en_US.UTF-8
+          export LANG=en_US.UTF-8
+          flutter pub get
+          cd ios && pod install
+      - name: Deploy iOS Beta to TestFlight via Fastlane
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: build_ci 
+          subdirectory: ios
+          options: '{ "system": "firebase" }'
+        env: 
+          DEVELOPER_APP_ID: '${{ secrets.DEVELOPER_APP_ID }}'
+          DEVELOPER_APP_IDENTIFIER: '${{ secrets.DEVELOPER_APP_IDENTIFIER }}' 
+          MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+          GIT_AUTHORIZATION: '${{ secrets.GIT_AUTHORIZATION }}'
+          
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }} # fastlane spaceauth -u FASTLANE_USER
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: '${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}'
+         
+          FIREBASE_TOKEN: '${{ secrets.FIREBASE_TOKEN }}'
+          CHANGELOG: ${{ github.event.release.body }}
+        

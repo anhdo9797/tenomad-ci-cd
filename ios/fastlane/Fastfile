@@ -1,0 +1,83 @@
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    update_fastlane
+  end
+
+  # run lane with syntax fastlane build_local 'system':'firebase'/'testflight'
+  lane :build_local do | options |
+    new_build_number=increment_build_number() 
+
+    build
+    deloy_app(system: options[:system])
+    push_to_slack(system: options[:system])
+
+  end
+
+  lane :sign_in do 
+    setup_jenkins
+    match(
+      type: "appstore", 
+      readonly: is_ci,
+      git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"])
+    )
+  end
+
+  lane :build do 
+    increment_build_number()
+    build_app(
+      configuration: "Release",
+      scheme: "Runner",
+      workspace: "Runner.xcworkspace",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: { 
+          "<your bundle id>" => "match AppStore <your bundle id>"
+        }
+      }
+    )
+  end
+
+  lane :deloy_app do | options | 
+    if options[:system] == 'firebase' 
+      firebase_app_distribution(
+        app: "<your app>",
+        groups: "<your group>",
+        release_notes_file: "../release-notes.txt"
+      )
+      else upload_to_testflight(skip_waiting_for_build_processing: true)
+    end
+  end 
+
+  lane :push_to_slack do | options |
+    new_build_number = get_build_number(xcodeproj: "Runner.xcodeproj")
+    commit = last_git_commit
+    slack(
+      message: "App successfully pushed to the #{options[:system] == 'firebase' ? "Firbase app Distribute" : "TestFlight"}",
+      success: true,        
+      default_payloads: [],   
+      # slack_url: "",
+      payload: {  
+        "Build Number: " => new_build_number,
+        "Note: " => ENV["CI"] ? commit[:message] : "", 
+        "Build Date:" => Time.new.to_s
+      },
+    )
+  end
+
+  lane :update_repo do | options |
+    new_build_number = get_build_number(xcodeproj: "Runner.xcodeproj")
+
+    git_commit(
+      path: "*", # git add .
+      message: "Updated build_number: #{new_build_number}"
+      )    
+    push_to_git_remote(
+      remote: "origin",        
+      local_branch: "HEAD", 
+      remote_branch: options[:branch], 
+      tags: true    
+    ) 
+  end
+end
