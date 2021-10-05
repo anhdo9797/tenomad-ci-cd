@@ -80,4 +80,18 @@ platform :ios do
       tags: true    
     ) 
   end
+  
+  lane :build_ci do | options |
+    setup_ci
+    match(
+      type: "appstore", 
+      readonly: is_ci,
+      git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"])
+    )
+
+    build
+    deloy_app(system: options[:system])
+    push_to_slack(system: options[:system])
+  end
+  
 end
