@@ -1,0 +1,22 @@
+[debug] [2021-10-04T10:17:55.921Z] ----------------------------------------------------------------------
+[debug] [2021-10-04T10:17:55.923Z] Command:       /usr/local/bin/node /usr/local/bin/firebase login:ci --no-localhost --debug
+[debug] [2021-10-04T10:17:55.923Z] CLI Version:   9.18.0
+[debug] [2021-10-04T10:17:55.923Z] Platform:      darwin
+[debug] [2021-10-04T10:17:55.923Z] Node Version:  v12.18.3
+[debug] [2021-10-04T10:17:55.925Z] Time:          Mon Oct 04 2021 17:17:55 GMT+0700 (Indochina Time)
+[debug] [2021-10-04T10:17:55.925Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+[info] Visit this URL on any device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=907371832&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob
+[info] 
+[debug] [2021-10-04T10:18:09.452Z] >>> HTTP REQUEST POST https://accounts.google.com/o/oauth2/token  
+ {"code":"4/1AX4XfWiwUEho6lTGvuMSxPX7hq0wOJBSPQ-oW5rByVz-zQtzspbZ-TuRy9Q","client_id":"563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com","client_secret":"j9iVZfS8kkCEFUPaAeJV0sAi","redirect_uri":"urn:ietf:wg:oauth:2.0:oob","grant_type":"authorization_code"}
+[debug] [2021-10-04T10:18:10.109Z] <<< HTTP RESPONSE 200 {"date":"Mon, 04 Oct 2021 10:18:10 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] ✔  Success! Use this token to login on a CI server:
+
+1//06TU75d6zcNv7CgYIARAAGAYSNwF-L9Ir2t8Hz-zjSiO2WIixSonDfY20OXNHnA-R2qBdX9j528TgHBm2MjTHb5Vhxs2DbIvYjYY
+
+Example: firebase deploy --token "$FIREBASE_TOKEN"
+ 
